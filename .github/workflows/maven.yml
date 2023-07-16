@@ -20,13 +20,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/checkout@v3
+
     - name: Set up Win JDK for packaging
       uses: actions/setup-java@v3
       with:
         java-version: '17'
         distribution: 'microsoft'
         cache: maven
-    - uses: actions/checkout@v3
+
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
@@ -37,11 +39,11 @@ jobs:
       run: mvn -B test
 #      run: mvn -B package --file pom.xml
 
-    - name: Test
+    - name: Test 1
       run: set
     - name: Set env
       run: echo "JAVA_HOME_WINDOWS=$(echo $JAVA_HOME_17_windows)" >> $GITHUB_ENV
-    - name: Test
+    - name: Test 2
       run: set
     - name: Package  with Maven
       run: mvn -B test
