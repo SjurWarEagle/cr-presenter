@@ -20,6 +20,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Set up Win JDK for packaging
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'microsoft'
+        cache: maven
     - uses: actions/checkout@v3
     - name: Set up JDK
       uses: actions/setup-java@v3
@@ -31,13 +37,6 @@ jobs:
       run: mvn -B test
 #      run: mvn -B package --file pom.xml
 
-    - uses: actions/checkout@v3
-    - name: Set up Win JDK for packaging
-      uses: actions/setup-java@v3
-      with:
-        java-version: '17'
-        distribution: 'microsoft'
-        cache: maven
     - name: Test
       run: set
     - name: Set env
