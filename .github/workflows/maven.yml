@@ -31,7 +31,7 @@ jobs:
     - name: Test 1
       run: set
     - name: Set env
-      run: echo "JAVA_HOME_WINDOWS=$(echo $JAVA_HOME_17_windows)" >> $GITHUB_ENV
+      run: echo "JAVA_HOME_WINDOWS=$(echo $JAVA_HOME)" >> $GITHUB_ENV
 
     - name: Set up JDK
       uses: actions/setup-java@v3
@@ -45,6 +45,8 @@ jobs:
 
     - name: Test 2
       run: set
+    - name: Test 3
+      run: ls -la $JAVA_HOME_WINDOWS
     - name: Package  with Maven
       run: mvn -B test
 #      run: mvn -B package --file pom.xml
