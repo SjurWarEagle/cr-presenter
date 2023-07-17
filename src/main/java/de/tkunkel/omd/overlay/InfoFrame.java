@@ -37,23 +37,21 @@ public class InfoFrame extends JFrame implements LockStateChangedEventListener, 
 
     @Override
     public void lockStateChanged(boolean locked) {
+        if (!this.isDisplayable()) {
+            return;
+        }
         if (locked) {
-            if (this.isDisplayable()) {
-                this.dispose();
-                this.setUndecorated(true);
-                this.setBackground(new Color(0, 0, 255, 0));
-//                this.setOpacity(0.5f);
-                this.setVisible(true);
-            }
+            this.dispose();
+            this.setUndecorated(true);
+            this.setBackground(new Color(0, 0, 255, 0));
+            this.setVisible(true);
+            this.setAlwaysOnTop(true);
         } else {
-            if (this.isDisplayable()) {
-                this.dispose();
-                this.setBackground(new Color(0, 0, 255, 255));
-//                this.setOpacity(1f);
-                this.setUndecorated(false);
-                this.setVisible(true);
-            }
-//            this.setVisible(true);
+            this.dispose();
+            this.setBackground(new Color(0, 0, 255, 255));
+            this.setUndecorated(false);
+            this.setVisible(true);
+            this.setAlwaysOnTop(false);
         }
     }
 
