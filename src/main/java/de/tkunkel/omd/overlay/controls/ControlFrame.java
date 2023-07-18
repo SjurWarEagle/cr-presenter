@@ -159,7 +159,6 @@ public class ControlFrame extends JFrame {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        ;
         return new ImageIcon(newImage);
     }
 
