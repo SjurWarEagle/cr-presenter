@@ -1,4 +1,4 @@
-package de.tkunkel.omd.overlay.controls.types;
+package de.tkunkel.omd.overlay.types;
 
 import java.util.EventListener;
 

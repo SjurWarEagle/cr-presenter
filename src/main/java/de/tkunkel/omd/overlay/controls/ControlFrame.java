@@ -2,8 +2,8 @@ package de.tkunkel.omd.overlay.controls;
 
 import de.tkunkel.omd.overlay.InfoFrame;
 import de.tkunkel.omd.overlay.starter.Starter;
-import de.tkunkel.omd.overlay.controls.types.InfoTextChangedEventListener;
-import de.tkunkel.omd.overlay.controls.types.LockStateChangedEventListener;
+import de.tkunkel.omd.overlay.types.InfoTextChangedEventListener;
+import de.tkunkel.omd.overlay.types.LockStateChangedEventListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -30,6 +30,7 @@ public class ControlFrame extends JFrame {
         statusChangedListenerList.add(listener);
     }
 
+    @SuppressWarnings("unused")
     public void removeStateChangedListener(LockStateChangedEventListener listener) {
         statusChangedListenerList.remove(listener);
     }
@@ -38,6 +39,7 @@ public class ControlFrame extends JFrame {
         infoTextListenerList.add(listener);
     }
 
+    @SuppressWarnings("unused")
     public void removeInfoTextChangedListener(InfoTextChangedEventListener listener) {
         infoTextListenerList.remove(listener);
     }
@@ -74,9 +76,8 @@ public class ControlFrame extends JFrame {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = GridBagConstraints.NONE;
-//        lockUnlock.setSize(50, 50);
-//        lockUnlock.setDebugGraphicsOptions(DebugGraphics.FLASH_OPTION);
-        lockUnlock.setPreferredSize(new Dimension(75, 75));
+        lockUnlock.setSize(new Dimension(60, 60));
+        lockUnlock.setPreferredSize(lockUnlock.getSize());
         lockUnlock.setBorder(null);
         lockUnlock.setBackground(null);
         lockUnlock.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -99,7 +100,7 @@ public class ControlFrame extends JFrame {
         gridBagConstraints.gridy = 2;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.fill = GridBagConstraints.NONE;
-        add(new JLabel("CR Subject:"),gridBagConstraints);
+        add(new JLabel("CR Subject:"), gridBagConstraints);
 
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
@@ -119,7 +120,7 @@ public class ControlFrame extends JFrame {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = GridBagConstraints.NONE;
-        add(new JLabel("CR Number:"),gridBagConstraints);
+        add(new JLabel("CR Number:"), gridBagConstraints);
 
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 1;
@@ -144,22 +145,18 @@ public class ControlFrame extends JFrame {
     }
 
     private ImageIcon readTransparentImage(String filename) {
-        BufferedImage in = null;
-        BufferedImage newImage = null;
+        int newWidth = 50;
+        @SuppressWarnings({"UnnecessaryLocalVariable", "SuspiciousNameCombination"})
+        int newHeight = newWidth;
+        BufferedImage in;
+
         try {
+
             in = ImageIO.read(Objects.requireNonNull(InfoFrame.class.getResource(filename)));
-            in.getScaledInstance(50, 50, 0);
-            newImage = new BufferedImage(in.getWidth(), in.getHeight(), BufferedImage.TYPE_INT_ARGB);
-            Graphics2D g = newImage.createGraphics();
-            int newWidth = 50;
-            int newHeight = newWidth;
-            g.drawImage(in, 0, 0, newWidth, newHeight, 0, 0, in.getWidth(),
-                    in.getHeight(), null);
-            g.dispose();
+            return new ImageIcon(in.getScaledInstance(newWidth, newHeight, Image.SCALE_SMOOTH));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return new ImageIcon(newImage);
     }
 
 }

@@ -1,8 +1,8 @@
 package de.tkunkel.omd.overlay;
 
 import de.tkunkel.omd.overlay.starter.Starter;
-import de.tkunkel.omd.overlay.controls.types.InfoTextChangedEventListener;
-import de.tkunkel.omd.overlay.controls.types.LockStateChangedEventListener;
+import de.tkunkel.omd.overlay.types.InfoTextChangedEventListener;
+import de.tkunkel.omd.overlay.types.LockStateChangedEventListener;
 
 import javax.swing.*;
 import java.awt.*;
