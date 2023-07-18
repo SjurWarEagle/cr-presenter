@@ -1,6 +1,6 @@
 package de.tkunkel.omd.overlay;
 
-import de.tkunkel.omd.overlay.starter.Starter;
+import de.tkunkel.omd.overlay.controls.ControlFrame;
 
 import java.awt.*;
 

@@ -1,24 +1,19 @@
-package de.tkunkel.omd.overlay;
+package de.tkunkel.omd.overlay.controls;
 
+import de.tkunkel.omd.overlay.InfoFrame;
 import de.tkunkel.omd.overlay.starter.Starter;
+import de.tkunkel.omd.overlay.controls.types.InfoTextChangedEventListener;
+import de.tkunkel.omd.overlay.controls.types.LockStateChangedEventListener;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.border.BevelBorder;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.Objects;
-
-interface LockStateChangedEventListener extends EventListener {
-    public void lockStateChanged(boolean newState);
-}
-
-interface InfoTextChangedEventListener extends EventListener {
-    public void infoTextChanged(String crNumber, String crSubject);
-}
 
 public class ControlFrame extends JFrame {
     ImageIcon lockedImage = readTransparentImage("/icons/locked.png");
@@ -57,6 +52,69 @@ public class ControlFrame extends JFrame {
         setLocation(300, 300);
         setVisible(true);
 
+        addCrNumberControl();
+        addCrSubjectControl();
+        addLockUnlockControl();
+
+        pack();
+        setVisible(true);
+
+        setIconImage(Toolkit.getDefaultToolkit().getImage(Starter.class.getResource("/icons/presentation.png")));
+        setFocusOrdering();
+    }
+
+    private void setFocusOrdering() {
+        crSubject.setNextFocusableComponent(crNumber);
+        crNumber.setNextFocusableComponent(crSubject);
+    }
+
+    private void addLockUnlockControl() {
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+//        lockUnlock.setSize(50, 50);
+//        lockUnlock.setDebugGraphicsOptions(DebugGraphics.FLASH_OPTION);
+        lockUnlock.setPreferredSize(new Dimension(75, 75));
+        lockUnlock.setBorder(null);
+        lockUnlock.setBackground(null);
+        lockUnlock.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        lockUnlock.setDoubleBuffered(true);
+        lockUnlock.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                overlayLocked = !overlayLocked;
+                updateLockedIcon();
+                statusChangedListenerList.forEach(lockStateChangedEventListener -> lockStateChangedEventListener.lockStateChanged(overlayLocked));
+            }
+        });
+        updateLockedIcon();
+        add(lockUnlock, gridBagConstraints);
+    }
+
+    private void addCrSubjectControl() {
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 1;
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+        add(new JLabel("CR Subject:"),gridBagConstraints);
+
+        gridBagConstraints.gridx = 3;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+        add(crSubject, gridBagConstraints);
+        crSubject.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyReleased(KeyEvent e) {
+                infoTextListenerList.forEach(infoTextChangedEventListener -> infoTextChangedEventListener.infoTextChanged(crNumber.getText(), crSubject.getText()));
+            }
+        });
+    }
+
+    private void addCrNumberControl() {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
@@ -75,47 +133,6 @@ public class ControlFrame extends JFrame {
             }
         });
 
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 1;
-        gridBagConstraints.fill = GridBagConstraints.NONE;
-        add(new JLabel("CR Subject:"),gridBagConstraints);
-
-        gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
-        add(crSubject, gridBagConstraints);
-        crSubject.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                infoTextListenerList.forEach(infoTextChangedEventListener -> infoTextChangedEventListener.infoTextChanged(crNumber.getText(), crSubject.getText()));
-            }
-        });
-
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = GridBagConstraints.NONE;
-        lockUnlock.setSize(50, 50);
-        lockUnlock.setBorder(null);
-        lockUnlock.setBackground(null);
-        lockUnlock.setDoubleBuffered(true);
-        lockUnlock.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                overlayLocked = !overlayLocked;
-                updateLockedIcon();
-                statusChangedListenerList.forEach(lockStateChangedEventListener -> lockStateChangedEventListener.lockStateChanged(overlayLocked));
-            }
-        });
-        updateLockedIcon();
-        add(lockUnlock, gridBagConstraints);
-
-        pack();
-        setVisible(true);
-
-        setIconImage(Toolkit.getDefaultToolkit().getImage(Starter.class.getResource("/icons/presentation.png")));
     }
 
     private void updateLockedIcon() {
