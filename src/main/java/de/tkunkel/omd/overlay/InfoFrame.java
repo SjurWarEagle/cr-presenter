@@ -8,7 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class InfoFrame extends JFrame implements LockStateChangedEventListener, InfoTextChangedEventListener {
-    private JLabel infoTextLabel = new JLabel();
+    private final JLabel infoTextLabel = new JLabel();
 
     public InfoFrame() {
         setTitle("Move this window to the overlay position");
