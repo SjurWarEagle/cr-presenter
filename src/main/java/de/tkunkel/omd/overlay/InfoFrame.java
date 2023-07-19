@@ -20,8 +20,7 @@ public class InfoFrame extends JFrame implements LockStateChangedEventListener, 
         this.setSize(600, 200);
         lockStateChanged(true);
 
-        Font mainTextFont = new Font("Serif", Font.PLAIN, 50)
-                .deriveFont(Font.PLAIN);
+        Font mainTextFont = new Font("Serif", Font.PLAIN, 50);
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;

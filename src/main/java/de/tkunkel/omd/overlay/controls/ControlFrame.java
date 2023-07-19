@@ -14,13 +14,16 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Vector;
 
 public class ControlFrame extends JFrame {
-    ImageIcon lockedImage = readTransparentImage("/icons/locked.png");
-    ImageIcon unlockedImage = readTransparentImage("/icons/unlocked.png");
-    JLabel lockUnlock = new JLabel();
-    JTextField crNumber = new JTextField("CR????");
-    JTextField crSubject = new JTextField("to do something");
+    private final int gap = 5;
+    private final ImageIcon lockedImage = readTransparentImage("/icons/locked.png");
+    private final ImageIcon unlockedImage = readTransparentImage("/icons/unlocked.png");
+    private final JLabel lockUnlock = new JLabel();
+    private final JTextField crNumber = new JTextField("CR????");
+    private final JTextField crSubject = new JTextField("to do something");
+    private final JList<String> preparedTextSelection = new JList<>();
 
     protected ArrayList<LockStateChangedEventListener> statusChangedListenerList = new ArrayList<>();
     protected ArrayList<InfoTextChangedEventListener> infoTextListenerList = new ArrayList<>();
@@ -57,12 +60,75 @@ public class ControlFrame extends JFrame {
         addCrNumberControl();
         addCrSubjectControl();
         addLockUnlockControl();
+        addPreparedTexts();
 
         pack();
         setVisible(true);
 
         setIconImage(Toolkit.getDefaultToolkit().getImage(Starter.class.getResource("/icons/presentation.png")));
         setFocusOrdering();
+    }
+
+    private void addPreparedTexts() {
+        Vector<String> preparedTexts = new Vector<>();
+        preparedTexts.add("CR1234:Example1");
+        preparedTexts.add("CR4711:Example2");
+        preparedTexts.add("CR1234:Example3");
+        preparedTexts.add("CR1234:Example4");
+        preparedTextSelection.setListData(preparedTexts);
+
+        preparedTextSelection.addListSelectionListener(e -> {
+            Object selectedValue = preparedTextSelection.getSelectedValue();
+            if (!Objects.isNull(selectedValue)) {
+                String[] crData = String.valueOf(selectedValue).split(":");
+                infoTextListenerList.forEach(infoTextChangedEventListener -> infoTextChangedEventListener.infoTextChanged(crData[0], crData[1]));
+            }
+        });
+
+
+        JLabel nextSelection = new JLabel(">");
+        JLabel prevSelection = new JLabel("<");
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+        gridBagConstraints.insets = new Insets(gap, gap, gap, gap);
+        add(preparedTextSelection, gridBagConstraints);
+
+        prevSelection.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                SwingUtilities.invokeLater(() -> {
+                    int nextIndex = Math.max(0, preparedTextSelection.getSelectedIndex() - 1);
+                    preparedTextSelection.setSelectedIndex(nextIndex);
+                    preparedTextSelection.revalidate();
+                });
+            }
+        });
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 1;
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+        gridBagConstraints.insets = new Insets(gap, gap, gap, gap);
+        add(prevSelection, gridBagConstraints);
+
+        nextSelection.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                SwingUtilities.invokeLater(() -> {
+                    int nextIndex = Math.min(preparedTexts.size(), preparedTextSelection.getSelectedIndex() + 1);
+                    preparedTextSelection.setSelectedIndex(nextIndex);
+                    preparedTextSelection.revalidate();
+                });
+            }
+        });
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 1;
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+        gridBagConstraints.insets = new Insets(gap, gap, gap, gap);
+        add(nextSelection, gridBagConstraints);
     }
 
     private void setFocusOrdering() {
@@ -74,6 +140,7 @@ public class ControlFrame extends JFrame {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 3;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = GridBagConstraints.NONE;
         lockUnlock.setSize(new Dimension(60, 60));
@@ -97,13 +164,14 @@ public class ControlFrame extends JFrame {
     private void addCrSubjectControl() {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 12;
         gridBagConstraints.gridwidth = 1;
+        gridBagConstraints.insets = new Insets(gap, gap, gap, gap);
         gridBagConstraints.fill = GridBagConstraints.NONE;
         add(new JLabel("CR Subject:"), gridBagConstraints);
 
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridy = 12;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         add(crSubject, gridBagConstraints);
@@ -118,12 +186,13 @@ public class ControlFrame extends JFrame {
     private void addCrNumberControl() {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.insets = new Insets(gap, gap, gap, gap);
         gridBagConstraints.fill = GridBagConstraints.NONE;
         add(new JLabel("CR Number:"), gridBagConstraints);
 
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 10;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         add(crNumber, gridBagConstraints);
