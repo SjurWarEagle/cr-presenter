@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.tkunkel.omd</groupId>
-    <artifactId>rc-presenter</artifactId>
+    <artifactId>cr-presenter</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
