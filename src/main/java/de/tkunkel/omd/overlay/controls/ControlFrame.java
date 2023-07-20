@@ -101,12 +101,10 @@ public class ControlFrame extends JFrame {
         gridBagConstraints.insets = new Insets(gap, gap, gap, gap);
         add(preparedTextSelection, gridBagConstraints);
 
-        prevSelection.addActionListener(e -> {
-            SwingUtilities.invokeLater(() -> {
-                int nextIndex = Math.max(0, preparedTextSelection.getSelectedIndex() - 1);
-                preparedTextSelection.setSelectedIndex(nextIndex);
-            });
-        });
+        prevSelection.addActionListener(e -> SwingUtilities.invokeLater(() -> {
+            int nextIndex = Math.max(0, preparedTextSelection.getSelectedIndex() - 1);
+            preparedTextSelection.setSelectedIndex(nextIndex);
+        }));
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 1;
@@ -114,13 +112,11 @@ public class ControlFrame extends JFrame {
         gridBagConstraints.insets = new Insets(gap, gap, gap, gap);
         add(prevSelection, gridBagConstraints);
 
-        nextSelection.addActionListener(e -> {
-            SwingUtilities.invokeLater(() -> {
-                int nextIndex = Math.min(defaultListModel.size() - 1, preparedTextSelection.getSelectedIndex() + 1);
-                preparedTextSelection.setSelectedIndex(nextIndex);
-                preparedTextSelection.revalidate();
-            });
-        });
+        nextSelection.addActionListener(e -> SwingUtilities.invokeLater(() -> {
+            int nextIndex = Math.min(defaultListModel.size() - 1, preparedTextSelection.getSelectedIndex() + 1);
+            preparedTextSelection.setSelectedIndex(nextIndex);
+            preparedTextSelection.revalidate();
+        }));
         gridBagConstraints.gridx = 4;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 1;

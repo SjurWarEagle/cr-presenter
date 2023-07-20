@@ -30,8 +30,7 @@ public class Overlay {
         Collection<String> rc = new ArrayList<>();
         try {
             String lines = Files.readString(Paths.get(fileNameToRead));
-            CrTexts crTexts = new Gson().fromJson(lines, CrTexts.class);
-            return crTexts;
+            return new Gson().fromJson(lines, CrTexts.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
