@@ -14,7 +14,7 @@ public class Starter {
                 if (!Objects.isNull(args) && args.length > 0) {
                     overlay.start(args[0]);
                 } else {
-                    overlay.start(null);
+                    overlay.start("cr-texts.json");
                 }
             }
         });

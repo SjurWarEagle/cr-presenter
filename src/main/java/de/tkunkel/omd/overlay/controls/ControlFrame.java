@@ -2,10 +2,7 @@ package de.tkunkel.omd.overlay.controls;
 
 import de.tkunkel.omd.overlay.InfoFrame;
 import de.tkunkel.omd.overlay.starter.Starter;
-import de.tkunkel.omd.overlay.types.CrText;
-import de.tkunkel.omd.overlay.types.CrTexts;
-import de.tkunkel.omd.overlay.types.InfoTextChangedEventListener;
-import de.tkunkel.omd.overlay.types.LockStateChangedEventListener;
+import de.tkunkel.omd.overlay.types.*;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -20,17 +17,27 @@ import java.util.Objects;
 
 public class ControlFrame extends JFrame {
     private final int gap = 5;
+    private final ImageIcon darkModeImage = readTransparentImage("/icons/off.png");
+    private final ImageIcon lightModeImage = readTransparentImage("/icons/on.png");
     private final ImageIcon lockedImage = readTransparentImage("/icons/locked.png");
     private final ImageIcon unlockedImage = readTransparentImage("/icons/unlocked.png");
     private final JLabel lockUnlock = new JLabel();
+    private final JLabel darkLightMode = new JLabel();
     private final JTextField crNumber = new JTextField("CR????");
     private final JTextField crSubject = new JTextField("to do something");
     private final DefaultListModel<String> defaultListModel = new DefaultListModel<>();
     private final JList<String> preparedTextSelection = new JList<>(defaultListModel);
 
     protected ArrayList<LockStateChangedEventListener> statusChangedListenerList = new ArrayList<>();
+    protected ArrayList<DarkModeChangedEventListener> darkModeListenerList = new ArrayList<>();
     protected ArrayList<InfoTextChangedEventListener> infoTextListenerList = new ArrayList<>();
+
+    public void addDarkModeChangedListener(DarkModeChangedEventListener listener) {
+        darkModeListenerList.add(listener);
+    }
+
     private boolean overlayLocked = false;
+    private boolean darkMode = true;
 
     public void addStateChangedListener(LockStateChangedEventListener listener) {
         statusChangedListenerList.add(listener);
@@ -54,7 +61,7 @@ public class ControlFrame extends JFrame {
         this.setLayout(new GridBagLayout());
 
         setTitle("Control");
-        setBackground(Color.BLUE);
+//        setBackground(Color.BLUE);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(400, 400);
         setLocation(300, 300);
@@ -63,6 +70,7 @@ public class ControlFrame extends JFrame {
         addCrNumberControl();
         addCrSubjectControl();
         addLockUnlockControl();
+        addDarkLightModeControl();
         addPreparedTexts();
 
         pack();
@@ -127,12 +135,37 @@ public class ControlFrame extends JFrame {
         crNumber.setNextFocusableComponent(crSubject);
     }
 
+    private void addDarkLightModeControl() {
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridheight = 1;
+        gridBagConstraints.gridwidth = 1;
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+        darkLightMode.setSize(new Dimension(60, 60));
+        darkLightMode.setPreferredSize(lockUnlock.getSize());
+        darkLightMode.setBorder(null);
+        darkLightMode.setBackground(null);
+        darkLightMode.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        darkLightMode.setDoubleBuffered(true);
+        darkLightMode.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                darkMode = !darkMode;
+                updateDarkModeIcon();
+                darkModeListenerList.forEach(darkModeChangedEventListener -> darkModeChangedEventListener.modeChanged(darkMode));
+            }
+        });
+        updateDarkModeIcon();
+        add(darkLightMode, gridBagConstraints);
+    }
+
     private void addLockUnlockControl() {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 3;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridwidth = 1;
         gridBagConstraints.fill = GridBagConstraints.NONE;
         lockUnlock.setSize(new Dimension(60, 60));
         lockUnlock.setPreferredSize(lockUnlock.getSize());
@@ -204,6 +237,14 @@ public class ControlFrame extends JFrame {
         }
     }
 
+    private void updateDarkModeIcon() {
+        if (darkMode) {
+            darkLightMode.setIcon(darkModeImage);
+        } else {
+            darkLightMode.setIcon(lightModeImage);
+        }
+    }
+
     private ImageIcon readTransparentImage(String filename) {
         int newWidth = 50;
         @SuppressWarnings({"UnnecessaryLocalVariable", "SuspiciousNameCombination"})
@@ -223,5 +264,6 @@ public class ControlFrame extends JFrame {
         for (CrText crText : crTexts.crs) {
             defaultListModel.addElement(crText.crNumber + ":" + crText.crSubject);
         }
+        pack();
     }
 }

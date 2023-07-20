@@ -19,11 +19,10 @@ public class Overlay {
 
     public void start(String fileNameToRead) {
         InfoFrame infoFrame = new InfoFrame();
-        infoFrame.setBackground(Color.BLUE);
-
 
         ControlFrame controlFrame = new ControlFrame();
         controlFrame.addStateChangedListener(infoFrame);
+        controlFrame.addDarkModeChangedListener(infoFrame);
         controlFrame.addInfoTextChangedListener(infoFrame);
         controlFrame.setCrTexts(readTexts(fileNameToRead));
 
