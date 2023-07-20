@@ -2,6 +2,8 @@ package de.tkunkel.omd.overlay.controls;
 
 import de.tkunkel.omd.overlay.InfoFrame;
 import de.tkunkel.omd.overlay.starter.Starter;
+import de.tkunkel.omd.overlay.types.CrText;
+import de.tkunkel.omd.overlay.types.CrTexts;
 import de.tkunkel.omd.overlay.types.InfoTextChangedEventListener;
 import de.tkunkel.omd.overlay.types.LockStateChangedEventListener;
 
@@ -13,6 +15,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Objects;
 
 public class ControlFrame extends JFrame {
@@ -70,10 +73,6 @@ public class ControlFrame extends JFrame {
     }
 
     private void addPreparedTexts() {
-        defaultListModel.addElement("CR1234:Example1");
-        defaultListModel.addElement("CR4711:Example2");
-        defaultListModel.addElement("CR1234:Example3");
-        defaultListModel.addElement("CR1234:Example4");
 
         preparedTextSelection.addListSelectionListener(e -> {
             Object selectedValue = preparedTextSelection.getSelectedValue();
@@ -91,6 +90,7 @@ public class ControlFrame extends JFrame {
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = GridBagConstraints.NONE;
+        gridBagConstraints.weightx = 1;
         gridBagConstraints.insets = new Insets(gap, gap, gap, gap);
         add(preparedTextSelection, gridBagConstraints);
 
@@ -219,4 +219,9 @@ public class ControlFrame extends JFrame {
         }
     }
 
+    public void setCrTexts(CrTexts crTexts) {
+        for (CrText crText : crTexts.crs) {
+            defaultListModel.addElement(crText.crNumber + ":" + crText.crSubject);
+        }
+    }
 }
