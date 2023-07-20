@@ -2,7 +2,6 @@ package de.tkunkel.omd.overlay.starter;
 
 import de.tkunkel.omd.overlay.Overlay;
 
-import java.awt.*;
 import java.util.Objects;
 
 public class Starter {

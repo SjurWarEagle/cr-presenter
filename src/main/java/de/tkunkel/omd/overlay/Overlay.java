@@ -4,8 +4,6 @@ import com.google.gson.Gson;
 import de.tkunkel.omd.overlay.controls.ControlFrame;
 import de.tkunkel.omd.overlay.types.CrTexts;
 
-import java.awt.*;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
