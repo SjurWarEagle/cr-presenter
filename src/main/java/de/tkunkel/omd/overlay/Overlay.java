@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Objects;
 
 public class Overlay {
 
@@ -22,7 +23,12 @@ public class Overlay {
         controlFrame.addStateChangedListener(infoFrame);
         controlFrame.addDarkModeChangedListener(infoFrame);
         controlFrame.addInfoTextChangedListener(infoFrame);
-        controlFrame.setCrTexts(readTexts(fileNameToRead));
+        if (Objects.isNull(fileNameToRead)){
+            CrTexts texts=new CrTexts();
+            controlFrame.setCrTexts(texts);
+        }else {
+            controlFrame.setCrTexts(readTexts(fileNameToRead));
+        }
 
     }
 

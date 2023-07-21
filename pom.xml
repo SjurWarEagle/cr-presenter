@@ -63,7 +63,7 @@
                 <version>2.4.1</version>
                 <executions>
                     <execution>
-                        <id>l4j-clui</id>
+                        <id>l4j-cli</id>
                         <phase>package</phase>
                         <goals>
                             <goal>launch4j</goal>
@@ -77,7 +77,7 @@
                                 <mainClass>de.tkunkel.omd.overlay.starter.Starter</mainClass>
                                 <preCp>anything</preCp>
                             </classPath>
-                            <icon>../src/resources/icons/presentation.png</icon>
+                            <icon>${project.basedir}/src/main/resources/icons/presentation.png</icon>
                             <jre>
                                 <path>%JAVA_HOME%</path>
                                 <requiresJdk>false</requiresJdk>

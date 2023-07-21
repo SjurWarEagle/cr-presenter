@@ -31,7 +31,6 @@ public class InfoFrame extends JFrame implements LockStateChangedEventListener, 
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = GridBagConstraints.LINE_START;
 
-//        infoTextLabel.setForeground(Color.BLUE);
         infoTextLabel.setFont(mainTextFont);
         this.add(infoTextLabel, gridBagConstraints);
 

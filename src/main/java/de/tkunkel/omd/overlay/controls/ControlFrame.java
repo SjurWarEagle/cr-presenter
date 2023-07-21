@@ -95,6 +95,7 @@ public class ControlFrame extends JFrame {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 3;
         gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = GridBagConstraints.NONE;
         gridBagConstraints.weightx = 1;
@@ -106,7 +107,8 @@ public class ControlFrame extends JFrame {
             preparedTextSelection.setSelectedIndex(nextIndex);
         }));
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridheight = 1;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.fill = GridBagConstraints.NONE;
         gridBagConstraints.insets = new Insets(gap, gap, gap, gap);
@@ -118,7 +120,8 @@ public class ControlFrame extends JFrame {
             preparedTextSelection.revalidate();
         }));
         gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridheight = 1;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.fill = GridBagConstraints.NONE;
         gridBagConstraints.insets = new Insets(gap, gap, gap, gap);
@@ -134,7 +137,7 @@ public class ControlFrame extends JFrame {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridheight = 1;
+        gridBagConstraints.gridheight = 2;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.fill = GridBagConstraints.NONE;
         darkLightMode.setSize(new Dimension(60, 60));
