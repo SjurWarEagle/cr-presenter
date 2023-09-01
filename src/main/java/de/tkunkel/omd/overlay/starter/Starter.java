@@ -14,8 +14,8 @@ public class Starter {
             if (!Objects.isNull(args) && args.length > 0) {
                 overlay.start(args[0]);
             } else {
-                if (Files.exists(Paths.get("cr-texts.json"))) {
-                    overlay.start("cr-texts.json");
+                if (Files.exists(Paths.get("config.json"))) {
+                    overlay.start("config.json");
                 } else {
                     overlay.start(null);
                 }
