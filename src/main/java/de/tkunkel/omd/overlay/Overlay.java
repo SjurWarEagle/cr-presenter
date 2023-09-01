@@ -26,6 +26,7 @@ public class Overlay {
         controlFrame.addClockLockChangedListener(clockFrame);
         controlFrame.addDarkModeChangedListener(clockFrame);
         controlFrame.addClockLockChangedListener(clockFrame);
+        controlFrame.addClockDurationChangedListenerList(clockFrame);
 
         if (Objects.isNull(fileNameToRead)) {
             Config texts = new Config();
@@ -35,7 +36,7 @@ public class Overlay {
         } else {
             Config config = readTexts(fileNameToRead);
             controlFrame.setConfigCrTexts(config);
-            clockFrame.setDurationInSec(config.countdown);
+            clockFrame.setDurationInSec(config.initialCountdownDurationInSeconds);
 
             clockFrame.setUse(config.features.useTimer);
             infoFrame.setUse(config.features.useTexts);

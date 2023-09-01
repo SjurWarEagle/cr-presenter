@@ -1,5 +1,5 @@
 {
-  "countdown": 600,
+  "initialCountdownDurationInSeconds": 600,
   "features": {
     "useTexts": true,
     "useTimer": true

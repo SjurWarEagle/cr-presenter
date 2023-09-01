@@ -28,6 +28,7 @@ public class ControlFrame extends JFrame {
     private final JLabel lockUnlock = new JLabel();
     private final JLabel lockUnlockClock = new JLabel();
     private final JLabel darkLightMode = new JLabel();
+    private final JSlider clockDurationSlider = new JSlider(JSlider.HORIZONTAL, 60 * 30);
     private final JTextField crNumber = new JTextField("CR????");
     private final JTextField crSubject = new JTextField("to do something");
     private final DefaultListModel<String> defaultListModel = new DefaultListModel<>();
@@ -37,6 +38,7 @@ public class ControlFrame extends JFrame {
     protected ArrayList<DarkModeChangedEventListener> darkModeListenerList = new ArrayList<>();
     protected ArrayList<InfoTextChangedEventListener> infoTextListenerList = new ArrayList<>();
     protected ArrayList<ClockLockStateChangedEventListener> clockLockChangedListenerList = new ArrayList<>();
+    protected ArrayList<ClockDurationChangedEventListener> clockDurationChangedListenerList = new ArrayList<>();
 
     public void addDarkModeChangedListener(DarkModeChangedEventListener listener) {
         darkModeListenerList.add(listener);
@@ -63,6 +65,10 @@ public class ControlFrame extends JFrame {
         clockLockChangedListenerList.add(listener);
     }
 
+    public void addClockDurationChangedListenerList(ClockDurationChangedEventListener listener) {
+        clockDurationChangedListenerList.add(listener);
+    }
+
     @SuppressWarnings("unused")
     public void removeInfoTextChangedListener(InfoTextChangedEventListener listener) {
         infoTextListenerList.remove(listener);
@@ -82,6 +88,7 @@ public class ControlFrame extends JFrame {
         addCrSubjectControl();
         addLockUnlockControl();
         addLockUnlockClockControl();
+        addClockSliderControl();
         addDarkLightModeControl();
         addPreparedTexts();
 
@@ -171,6 +178,35 @@ public class ControlFrame extends JFrame {
         });
         updateDarkModeIcon();
         add(darkLightMode, gridBagConstraints);
+    }
+
+    private void addClockSliderControl() {
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridheight = 1;
+        gridBagConstraints.gridwidth = 1;
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+        add(new JLabel("Timer Duration"), gridBagConstraints);
+
+        gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridheight = 1;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+//        clockDurationSlider.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        clockDurationSlider.setDoubleBuffered(true);
+//        clockDurationSlider.setMinorTickSpacing(10);
+        clockDurationSlider.setMajorTickSpacing(60);
+        clockDurationSlider.setPaintTicks(true);
+        clockDurationSlider.setSnapToTicks(true);
+        clockDurationSlider.addChangeListener(e -> {
+            int value = ((JSlider) e.getSource()).getValue();
+            this.clockDurationChangedListenerList.forEach(clockDurationChangedEventListener -> clockDurationChangedEventListener.durationChanged(value));
+        });
+//        updateClockLockedIcon();
+        add(clockDurationSlider, gridBagConstraints);
     }
 
     private void addLockUnlockClockControl() {
@@ -311,6 +347,9 @@ public class ControlFrame extends JFrame {
             defaultListModel.addElement(crText.crNumber + ":" + crText.crSubject);
         }
         lockUnlockClock.setVisible(config.features.useTimer);
+        clockDurationSlider.setVisible(config.features.useTimer);
+        clockDurationSlider.setValue(config.initialCountdownDurationInSeconds);
+
         lockUnlock.setVisible(config.features.useTexts);
         crNumber.setVisible(config.features.useTexts);
         crSubject.setVisible(config.features.useTexts);
