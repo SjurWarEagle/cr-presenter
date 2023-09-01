@@ -35,10 +35,13 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
                 ClockFrame.infoTextLabel.setText(timeString);
 
                 ClockFrame.progressBar.setValue((int) ClockFrame.remainingDurationInSec);
+//                System.out.println(ClockFrame.progressBar.getMinimum());
+//                System.out.println(ClockFrame.remainingDurationInSec);
+//                System.out.println(ClockFrame.progressBar.getMaximum());
 
-                ClockFrame.progressBar.updateUI();
 
                 try {
+                    //noinspection BusyWait
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
@@ -52,7 +55,7 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
 
         ClockFrame.progressBar.setMinimum(0);
         ClockFrame.progressBar.setMaximum(Math.toIntExact(initialDurationInSec));
-        ClockFrame.progressBar.updateUI();
+        //ClockFrame.progressBar.updateUI();
 
         this.setLayout(new GridBagLayout());
 
@@ -77,13 +80,13 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
         gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = GridBagConstraints.LINE_START;
 
-        progressBar.addMouseListener(new MouseAdapter() {
+        ClockFrame.progressBar.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 ClockFrame.resetTimer();
             }
         });
-        this.add(progressBar, gridBagConstraints);
+        this.add(ClockFrame.progressBar, gridBagConstraints);
     }
 
     private void addTimeText() {
@@ -121,11 +124,28 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
         if (!this.isDisplayable()) {
             return;
         }
+        Color bgColor;
+        Color fgColor;
         if (darkMode) {
-            infoTextLabel.setForeground(Color.WHITE);
+            bgColor = Color.WHITE;
+            fgColor = Color.WHITE;
         } else {
-            infoTextLabel.setForeground(Color.BLACK);
+            bgColor = Color.BLACK;
+            fgColor = Color.BLACK;
         }
+        this.setForeground(fgColor);
+        this.setBackground(bgColor);
+
+        infoTextLabel.setBackground(bgColor);
+        infoTextLabel.setForeground(bgColor);
+//        progressBar.setBackground(bgColor);
+//        progressBar.setForeground(fgColor);
+
+        UIManager.put("ProgressBar.background", bgColor);
+        UIManager.put("ProgressBar.foreground", fgColor);
+        UIManager.put("ProgressBar.selectionBackground", bgColor);
+        UIManager.put("ProgressBar.selectionForeground", fgColor);
+
         if (this.isLocked) {
             this.dispose();
             this.setUndecorated(true);
@@ -135,25 +155,32 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
         } else {
             this.dispose();
             if (darkMode) {
-                this.setBackground(new Color(0, 0, 0, 255));
+                bgColor = Color.BLACK;
             } else {
-                this.setBackground(new Color(255, 255, 255, 255));
+                bgColor = Color.WHITE;
             }
+            this.setBackground(bgColor);
+            UIManager.put("ProgressBar.background", bgColor);
+            UIManager.put("ProgressBar.foreground", fgColor);
+            UIManager.put("ProgressBar.selectionBackground", bgColor);
+            UIManager.put("ProgressBar.selectionForeground", fgColor);
+
             this.setUndecorated(false);
             this.setVisible(true);
             this.setAlwaysOnTop(false);
+            ClockFrame.progressBar.updateUI();
         }
     }
 
     @Override
     public void infoTextChanged(String crNumber, String crSubject) {
-        this.infoTextLabel.setText(crNumber + ": " + crSubject);
+        infoTextLabel.setText(crNumber + ": " + crSubject);
         pack();
     }
 
     @Override
     public void modeChanged(boolean newMode) {
-        if (!use){
+        if (!use) {
             return;
         }
         this.darkMode = newMode;
@@ -161,7 +188,8 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
     }
 
     public void setDurationInSec(long durationInSec) {
-        this.initialDurationInSec = durationInSec;
+        initialDurationInSec = durationInSec;
+        ClockFrame.progressBar.setMaximum(Math.toIntExact(initialDurationInSec));
     }
 
     public void setUse(boolean useTimer) {

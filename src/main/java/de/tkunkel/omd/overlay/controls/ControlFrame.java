@@ -37,7 +37,6 @@ public class ControlFrame extends JFrame {
     protected ArrayList<DarkModeChangedEventListener> darkModeListenerList = new ArrayList<>();
     protected ArrayList<InfoTextChangedEventListener> infoTextListenerList = new ArrayList<>();
     protected ArrayList<ClockLockStateChangedEventListener> clockLockChangedListenerList = new ArrayList<>();
-    private Config config;
 
     public void addDarkModeChangedListener(DarkModeChangedEventListener listener) {
         darkModeListenerList.add(listener);
@@ -143,7 +142,9 @@ public class ControlFrame extends JFrame {
     }
 
     private void setFocusOrdering() {
+        //noinspection deprecation
         crSubject.setNextFocusableComponent(crNumber);
+        //noinspection deprecation
         crNumber.setNextFocusableComponent(crSubject);
     }
 
@@ -306,7 +307,6 @@ public class ControlFrame extends JFrame {
     }
 
     public void setConfigCrTexts(Config config) {
-        this.config = config;
         for (CrText crText : config.crs) {
             defaultListModel.addElement(crText.crNumber + ":" + crText.crSubject);
         }
