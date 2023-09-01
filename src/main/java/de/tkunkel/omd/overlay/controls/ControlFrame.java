@@ -8,7 +8,10 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,7 +23,10 @@ public class ControlFrame extends JFrame {
     private final ImageIcon lightModeImage = readTransparentImage("/icons/on.png");
     private final ImageIcon lockedImage = readTransparentImage("/icons/locked.png");
     private final ImageIcon unlockedImage = readTransparentImage("/icons/unlocked.png");
+    private final ImageIcon lockedClockImage = readTransparentImage("/icons/clock_locked.png");
+    private final ImageIcon unlockedClockImage = readTransparentImage("/icons/clock_unlocked.png");
     private final JLabel lockUnlock = new JLabel();
+    private final JLabel lockUnlockClock = new JLabel();
     private final JLabel darkLightMode = new JLabel();
     private final JTextField crNumber = new JTextField("CR????");
     private final JTextField crSubject = new JTextField("to do something");
@@ -30,11 +36,13 @@ public class ControlFrame extends JFrame {
     protected ArrayList<LockStateChangedEventListener> statusChangedListenerList = new ArrayList<>();
     protected ArrayList<DarkModeChangedEventListener> darkModeListenerList = new ArrayList<>();
     protected ArrayList<InfoTextChangedEventListener> infoTextListenerList = new ArrayList<>();
+    protected ArrayList<ClockLockStateChangedEventListener> clockLockChangedListenerList = new ArrayList<>();
 
     public void addDarkModeChangedListener(DarkModeChangedEventListener listener) {
         darkModeListenerList.add(listener);
     }
 
+    private boolean clockLocked = false;
     private boolean overlayLocked = false;
     private boolean darkMode = true;
 
@@ -49,6 +57,10 @@ public class ControlFrame extends JFrame {
 
     public void addInfoTextChangedListener(InfoTextChangedEventListener listener) {
         infoTextListenerList.add(listener);
+    }
+
+    public void addClockLockChangedListener(ClockLockStateChangedEventListener listener) {
+        clockLockChangedListenerList.add(listener);
     }
 
     @SuppressWarnings("unused")
@@ -69,6 +81,7 @@ public class ControlFrame extends JFrame {
         addCrNumberControl();
         addCrSubjectControl();
         addLockUnlockControl();
+        addLockUnlockClockControl();
         addDarkLightModeControl();
         addPreparedTexts();
 
@@ -137,7 +150,7 @@ public class ControlFrame extends JFrame {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridheight = 1;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.fill = GridBagConstraints.NONE;
         darkLightMode.setSize(new Dimension(60, 60));
@@ -158,11 +171,36 @@ public class ControlFrame extends JFrame {
         add(darkLightMode, gridBagConstraints);
     }
 
+    private void addLockUnlockClockControl() {
+        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridheight = 1;
+        gridBagConstraints.gridwidth = 1;
+        gridBagConstraints.fill = GridBagConstraints.NONE;
+        lockUnlockClock.setSize(new Dimension(60, 60));
+        lockUnlockClock.setPreferredSize(lockUnlockClock.getSize());
+        lockUnlockClock.setBorder(null);
+        lockUnlockClock.setBackground(null);
+        lockUnlockClock.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+        lockUnlockClock.setDoubleBuffered(true);
+        lockUnlockClock.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                clockLocked = !clockLocked;
+                updateClockLockedIcon();
+                clockLockChangedListenerList.forEach(lockStateChangedEventListener -> lockStateChangedEventListener.clockLockStateChanged(clockLocked));
+            }
+        });
+        updateClockLockedIcon();
+        add(lockUnlockClock, gridBagConstraints);
+    }
+
     private void addLockUnlockControl() {
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.gridheight = 1;
         gridBagConstraints.gridwidth = 1;
         gridBagConstraints.fill = GridBagConstraints.NONE;
         lockUnlock.setSize(new Dimension(60, 60));
@@ -225,6 +263,14 @@ public class ControlFrame extends JFrame {
             }
         });
 
+    }
+
+    private void updateClockLockedIcon() {
+        if (clockLocked) {
+            lockUnlockClock.setIcon(lockedClockImage);
+        } else {
+            lockUnlockClock.setIcon(unlockedClockImage);
+        }
     }
 
     private void updateLockedIcon() {
