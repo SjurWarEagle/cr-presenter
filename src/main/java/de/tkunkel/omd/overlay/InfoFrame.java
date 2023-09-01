@@ -12,6 +12,7 @@ public class InfoFrame extends JFrame implements LockStateChangedEventListener, 
     private final JLabel infoTextLabel = new JLabel();
     private boolean darkMode = false;
     private boolean isLocked = false;
+    private boolean use = true;
 
     public InfoFrame() {
         setTitle("Move this window to the overlay position");
@@ -21,6 +22,7 @@ public class InfoFrame extends JFrame implements LockStateChangedEventListener, 
         this.getContentPane().setBackground(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setMinimumSize(new Dimension(200, 100));
+        this.setLocation(50, 50);
         lockStateChanged(false);
 
         Font mainTextFont = new Font("Serif", Font.PLAIN, 50);
@@ -34,7 +36,7 @@ public class InfoFrame extends JFrame implements LockStateChangedEventListener, 
         infoTextLabel.setFont(mainTextFont);
         this.add(infoTextLabel, gridBagConstraints);
 
-        setIconImage(Toolkit.getDefaultToolkit().getImage(Starter.class.getResource("/icons/presentation.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(Starter.class.getResource("/icons/unlocked.png")));
         infoTextChanged("Ready", "Go");
         refreshDisplay();
         setVisible(true);
@@ -83,7 +85,15 @@ public class InfoFrame extends JFrame implements LockStateChangedEventListener, 
 
     @Override
     public void modeChanged(boolean newMode) {
+        if (!this.use) {
+            return;
+        }
         this.darkMode = newMode;
         refreshDisplay();
+    }
+
+    public void setUse(boolean useTexts) {
+        this.use = useTexts;
+        this.setVisible(use);
     }
 }

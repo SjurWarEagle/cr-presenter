@@ -1,8 +1,8 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="de.tkunkel.omd.overlay.starter.Starter" type="Application" factoryName="Application" nameIsGenerated="true">
+  <configuration default="false" name="Starter" type="Application" factoryName="Application" nameIsGenerated="true">
     <option name="MAIN_CLASS_NAME" value="de.tkunkel.omd.overlay.starter.Starter" />
     <module name="cr-presenter" />
-    <option name="PROGRAM_PARAMETERS" value="cr-text-example.json" />
+    <option name="PROGRAM_PARAMETERS" value="config.json" />
     <extension name="coverage">
       <pattern>
         <option name="PATTERN" value="de.tkunkel.omd.overlay.starter.*" />

@@ -1,4 +1,9 @@
 {
+  "countdown": 600,
+  "features": {
+    "useTexts": true,
+    "useTimer": true
+  },
   "crs": [
     {
       "crNumber": "CR0001",

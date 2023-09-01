@@ -17,6 +17,7 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
     private boolean isLocked = false;
     private static long remainingDurationInSec;
     private static long initialDurationInSec;
+    private boolean use = true;
 
     public ClockFrame(long durationInSec) {
         setTitle("Move this window to the overlay position");
@@ -36,7 +37,6 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
                 ClockFrame.progressBar.setValue((int) ClockFrame.remainingDurationInSec);
 
                 ClockFrame.progressBar.updateUI();
-//                System.out.println(progressBar.getPercentComplete());
 
                 try {
                     Thread.sleep(1000);
@@ -64,7 +64,7 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
         addTimeText();
         addTimeBar();
 
-        setIconImage(Toolkit.getDefaultToolkit().getImage(Starter.class.getResource("/icons/presentation.png")));
+        setIconImage(Toolkit.getDefaultToolkit().getImage(Starter.class.getResource("/icons/clock_unlocked.png")));
         infoTextChanged("Ready", "Go");
         refreshDisplay();
         setVisible(true);
@@ -108,7 +108,6 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
 
     private static void resetTimer() {
         ClockFrame.remainingDurationInSec = ClockFrame.initialDurationInSec;
-        //System.out.println("resetting timer");
     }
 
 
@@ -154,11 +153,19 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
 
     @Override
     public void modeChanged(boolean newMode) {
+        if (!use){
+            return;
+        }
         this.darkMode = newMode;
         refreshDisplay();
     }
 
     public void setDurationInSec(long durationInSec) {
         this.initialDurationInSec = durationInSec;
+    }
+
+    public void setUse(boolean useTimer) {
+        this.use = useTimer;
+        this.setVisible(use);
     }
 }

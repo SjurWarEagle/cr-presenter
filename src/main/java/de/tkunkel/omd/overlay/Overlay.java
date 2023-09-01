@@ -2,7 +2,7 @@ package de.tkunkel.omd.overlay;
 
 import com.google.gson.Gson;
 import de.tkunkel.omd.overlay.controls.ControlFrame;
-import de.tkunkel.omd.overlay.types.CrTexts;
+import de.tkunkel.omd.overlay.types.Config;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -27,21 +27,27 @@ public class Overlay {
         controlFrame.addDarkModeChangedListener(clockFrame);
         controlFrame.addClockLockChangedListener(clockFrame);
 
-        if (Objects.isNull(fileNameToRead)){
-            CrTexts texts=new CrTexts();
-            controlFrame.setCrTexts(texts);
-        }else {
-            CrTexts crTexts = readTexts(fileNameToRead);
-            controlFrame.setCrTexts(crTexts);
-            clockFrame.setDurationInSec(crTexts.countdown);
+        if (Objects.isNull(fileNameToRead)) {
+            Config texts = new Config();
+            controlFrame.setConfigCrTexts(texts);
+            clockFrame.setUse(false);
+            infoFrame.setUse(false);
+        } else {
+            Config config = readTexts(fileNameToRead);
+            controlFrame.setConfigCrTexts(config);
+            clockFrame.setDurationInSec(config.countdown);
+
+            clockFrame.setUse(config.features.useTimer);
+            infoFrame.setUse(config.features.useTexts);
         }
+
 
     }
 
-    private CrTexts readTexts(String fileNameToRead) {
+    private Config readTexts(String fileNameToRead) {
         try {
             String lines = Files.readString(Paths.get(fileNameToRead));
-            return new Gson().fromJson(lines, CrTexts.class);
+            return new Gson().fromJson(lines, Config.class);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
