@@ -27,4 +27,4 @@ jobs:
           files: |
             target/cr-presenter-1.0-SNAPSHOT-jar-with-dependencies.jar
             LICENSE
-            README.txt
+            README.md
