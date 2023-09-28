@@ -31,6 +31,6 @@ bin/
 /target/
 .idea
 *.iml
-cr-texts.json
+config.json
 
 config.json
