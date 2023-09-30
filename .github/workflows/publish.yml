@@ -30,7 +30,7 @@ jobs:
           cp LICENSE release/
           cp scripts/wrapper.cmd release/
           cp target/cr-presenter-*-jar-with-dependencies.jar release/cr-presenter.jar
-          zip release-${{GITHUB_REF_NAME}}.zip release/*
+          zip release-$GITHUB_REF_NAME.zip release/*
       - name: Release
         env:
           # This token is provided by Actions, you do not need to create your own token
