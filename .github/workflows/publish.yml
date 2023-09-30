@@ -23,14 +23,14 @@ jobs:
         run: mvn package
       - name: prepare release files
         run: |
-          mkdir release
-          cp config-example.json release/config.json
-          cp CHANGELOG.md release/
-          cp README.md release/
-          cp LICENSE release/
-          cp scripts/wrapper.cmd release/
-          cp target/cr-presenter-*-jar-with-dependencies.jar release/cr-presenter.jar
-          zip release-$GITHUB_REF_NAME.zip release/*
+          mkdir release-$GITHUB_REF_NAME
+          cp config-example.json release-$GITHUB_REF_NAME/config.json
+          cp CHANGELOG.md release-$GITHUB_REF_NAME/
+          cp README.md release-$GITHUB_REF_NAME/
+          cp LICENSE release-$GITHUB_REF_NAME/
+          cp scripts/wrapper.cmd release-$GITHUB_REF_NAME/
+          cp target/cr-presenter-*-jar-with-dependencies.jar release-$GITHUB_REF_NAME/cr-presenter.jar
+          zip release-$GITHUB_REF_NAME.zip release-$GITHUB_REF_NAME/*
       - name: Release
         env:
           # This token is provided by Actions, you do not need to create your own token
