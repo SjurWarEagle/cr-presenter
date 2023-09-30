@@ -22,7 +22,15 @@ jobs:
       - name: Build with Maven
         run: mvn package
       - name: prepare release files
-        run: cp config-example.json config.json
+        run: |
+          mkdir release
+          cp config-example.json release/config.json
+          cp CHANGELOG.md release/
+          cp README.md release/
+          cp LICENSE release/
+          cp scripts/wrapper.cmd release/
+          cp target/cr-presenter-*-jar-with-dependencies.jar release/cr-presenter.jar
+          zip release-${{GITHUB_REF_NAME}}.zip release/*
       - name: Release
         env:
           # This token is provided by Actions, you do not need to create your own token
@@ -35,5 +43,4 @@ jobs:
             LICENSE
             README.md
             CHANGELOG.md
-            target/cr-presenter-*-jar-with-dependencies.jar
-            config.json
+            release-${{GITHUB_REF_NAME}}.zip
