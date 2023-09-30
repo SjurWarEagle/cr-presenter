@@ -1,0 +1,31 @@
+name: Publish Release
+on:
+  push:
+    tags:
+      - 'v*'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+          cache: maven
+      - name: Build with Maven
+        run: mvn package
+      - name: Release
+        env:
+          # This token is provided by Actions, you do not need to create your own token
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
+        with:
+          body_path: ${{ github.workspace }}-CHANGELOG.txt
+          files: |
+            LICENSE
+            README.md
+            CHANGELOG.md
+            target/cr-presenter-1.0-SNAPSHOT-jar-with-dependencies.jar

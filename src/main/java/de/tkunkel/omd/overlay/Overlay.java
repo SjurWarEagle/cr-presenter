@@ -1,19 +1,53 @@
 package de.tkunkel.omd.overlay;
 
-import de.tkunkel.omd.overlay.starter.Starter;
+import com.google.gson.Gson;
+import de.tkunkel.omd.overlay.controls.ControlFrame;
+import de.tkunkel.omd.overlay.types.config.Config;
 
-import java.awt.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Objects;
 
 public class Overlay {
 
     public Overlay() {
-        InfoFrame infoFrame = new InfoFrame();
-        ControlFrame controlFrame = new ControlFrame();
-        controlFrame.addStateChangedListener(infoFrame);
-        controlFrame.addInfoTextChangedListener(infoFrame);
-        infoFrame.setBackground(Color.BLUE);
-
-
     }
+
+    public void start(final String fileNameToRead) {
+        ClockFrame clockFrame = new ClockFrame(100);
+        InfoFrame infoFrame = new InfoFrame();
+        Config config = readConfig(fileNameToRead);
+
+        ControlFrame controlFrame = new ControlFrame(config);
+        controlFrame.addStateChangedListener(infoFrame);
+        controlFrame.addDarkModeChangedListener(infoFrame);
+        controlFrame.addInfoTextChangedListener(infoFrame);
+
+        controlFrame.addClockLockChangedListener(clockFrame);
+        controlFrame.addDarkModeChangedListener(clockFrame);
+        controlFrame.addClockLockChangedListener(clockFrame);
+        controlFrame.addClockDurationChangedListenerList(clockFrame);
+
+        controlFrame.setConfigCrTexts(config);
+        clockFrame.setDurationInSec(config.getInitialCountdownDurationInSeconds());
+
+        clockFrame.setUse(config.getFeatures().isUseTimer());
+        infoFrame.setUse(config.getFeatures().isUseTexts());
+    }
+
+
+    private Config readConfig(final String fileNameToRead) {
+        if (Objects.isNull(fileNameToRead)) {
+            return new Config();
+        }
+        try {
+            String lines = Files.readString(Paths.get(fileNameToRead));
+            return new Gson().fromJson(lines, Config.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

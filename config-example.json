@@ -1,0 +1,33 @@
+{
+  "initialCountdownDurationInSeconds": 600,
+  "features": {
+    "useTexts": true,
+    "useTimer": true
+  },
+  "crs": [
+    {
+      "crNumber": "CR0001",
+      "crSubject": "The beginning"
+    },
+    {
+      "crNumber": "CR0002",
+      "crSubject": "There was nothing"
+    },
+    {
+      "crNumber": "CR0003",
+      "crSubject": "4 Elephants appeared"
+    },
+    {
+      "crNumber": "CR0004",
+      "crSubject": "A turtle meets the elephants"
+    },
+    {
+      "crNumber": "CR0005",
+      "crSubject": "A disk is created"
+    },
+    {
+      "crNumber": "CR9999",
+      "crSubject": "The end"
+    }
+  ]
+}
