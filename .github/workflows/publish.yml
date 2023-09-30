@@ -43,4 +43,4 @@ jobs:
             LICENSE
             README.md
             CHANGELOG.md
-            release-${{GITHUB_REF_NAME}}.zip
+            release-*.zip
