@@ -12,11 +12,11 @@ public class CrText {
         return crNumber;
     }
 
-    public void setCrNumber(String crNumber) {
-        this.crNumber = crNumber;
+    public void setCrNumber(String givenCrNumber) {
+        this.crNumber = givenCrNumber;
     }
 
-    public void setCrSubject(String crSubject) {
-        this.crSubject = crSubject;
+    public void setCrSubject(String givenCrSubject) {
+        this.crSubject = givenCrSubject;
     }
 }

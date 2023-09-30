@@ -12,11 +12,11 @@ public class ConfigFeatures {
         return useTexts;
     }
 
-    public void setUseTimer(boolean useTimer) {
-        this.useTimer = useTimer;
+    public void setUseTimer(boolean givenUseTimer) {
+        this.useTimer = givenUseTimer;
     }
 
-    public void setUseTexts(boolean useTexts) {
-        this.useTexts = useTexts;
+    public void setUseTexts(boolean givenUseTexts) {
+        this.useTexts = givenUseTexts;
     }
 }

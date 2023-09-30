@@ -6,8 +6,8 @@ public class Config {
     private ConfigFeatures features = new ConfigFeatures();
     private final CrText[] crs = new CrText[0];
 
-    public void setInitialCountdownDurationInSeconds(int initialCountdownDurationInSeconds) {
-        this.initialCountdownDurationInSeconds = initialCountdownDurationInSeconds;
+    public void setInitialCountdownDurationInSeconds(int givenInitialCountdownDurationInSeconds) {
+        this.initialCountdownDurationInSeconds = givenInitialCountdownDurationInSeconds;
     }
 
     public int getInitialCountdownDurationInSeconds() {

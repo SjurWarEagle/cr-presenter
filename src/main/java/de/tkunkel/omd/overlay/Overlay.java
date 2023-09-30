@@ -43,7 +43,9 @@ public class Overlay {
             return new Config();
         }
         if (!Files.exists(Path.of(fileNameToRead))) {
-            System.err.println("'"+fileNameToRead+"' does not exist, using defaults.");
+            System.err.println("'"
+                    + fileNameToRead
+                    + "' does not exist, using defaults.");
             return new Config();
         }
         try {
