@@ -12,10 +12,12 @@ public class ConfigFeatures {
         return useTexts;
     }
 
+    @SuppressWarnings("unused")
     public void setUseTimer(boolean givenUseTimer) {
         this.useTimer = givenUseTimer;
     }
 
+    @SuppressWarnings("unused")
     public void setUseTexts(boolean givenUseTexts) {
         this.useTexts = givenUseTexts;
     }
