@@ -21,6 +21,8 @@ jobs:
           cache: maven
       - name: Build with Maven
         run: mvn package
+      - name: prepare release files
+        run: cp config-example.json config.json
       - name: Release
         env:
           # This token is provided by Actions, you do not need to create your own token
@@ -33,4 +35,5 @@ jobs:
             LICENSE
             README.md
             CHANGELOG.md
-            target/cr-presenter-1.0-SNAPSHOT-jar-with-dependencies.jar
+            target/cr-presenter-*-jar-with-dependencies.jar
+            config.json
