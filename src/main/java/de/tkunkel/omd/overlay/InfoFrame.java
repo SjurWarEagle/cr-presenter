@@ -95,5 +95,8 @@ public class InfoFrame extends JFrame implements LockStateChangedEventListener, 
     public void setUse(final boolean useTexts) {
         this.use = useTexts;
         this.setVisible(use);
+        if (!use) {
+            this.dispose();
+        }
     }
 }

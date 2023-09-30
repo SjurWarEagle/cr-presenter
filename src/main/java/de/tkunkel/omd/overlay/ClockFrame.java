@@ -203,6 +203,9 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
     public void setUse(final boolean useTimer) {
         this.use = useTimer;
         this.setVisible(use);
+        if (!use) {
+            this.dispose();
+        }
     }
 
     @Override

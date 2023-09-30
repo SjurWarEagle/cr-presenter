@@ -6,6 +6,7 @@ import de.tkunkel.omd.overlay.types.config.Config;
 
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
@@ -39,6 +40,10 @@ public class Overlay {
 
     private Config readConfig(final String fileNameToRead) {
         if (Objects.isNull(fileNameToRead)) {
+            return new Config();
+        }
+        if (!Files.exists(Path.of(fileNameToRead))) {
+            System.err.println("'"+fileNameToRead+"' does not exist, using defaults.");
             return new Config();
         }
         try {

@@ -1,8 +1,8 @@
 package de.tkunkel.omd.overlay.types.config;
 
 public class ConfigFeatures {
-    private final boolean useTexts = false;
-    private final boolean useTimer = false;
+    private boolean useTexts;
+    private boolean useTimer;
 
     public boolean isUseTimer() {
         return useTimer;
@@ -10,5 +10,13 @@ public class ConfigFeatures {
 
     public boolean isUseTexts() {
         return useTexts;
+    }
+
+    public void setUseTimer(boolean useTimer) {
+        this.useTimer = useTimer;
+    }
+
+    public void setUseTexts(boolean useTexts) {
+        this.useTexts = useTexts;
     }
 }

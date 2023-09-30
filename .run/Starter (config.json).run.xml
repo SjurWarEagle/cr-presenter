@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="Starter" type="Application" factoryName="Application" nameIsGenerated="true">
+  <configuration default="false" name="Starter (config.json)" type="Application" factoryName="Application">
     <option name="MAIN_CLASS_NAME" value="de.tkunkel.omd.overlay.starter.Starter" />
     <module name="cr-presenter" />
     <option name="PROGRAM_PARAMETERS" value="config.json" />
