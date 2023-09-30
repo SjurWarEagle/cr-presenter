@@ -6,7 +6,7 @@
 * public display of time without hindering presentation
 
 ## 🖥️️ Screenshots
-
+![Overview](documentation/images/overview.png)
 
 ## 🛠️ Conf
 Example configuration
