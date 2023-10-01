@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import de.tkunkel.omd.overlay.controls.ControlFrame;
 import de.tkunkel.omd.overlay.types.config.Config;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,6 +14,17 @@ import java.util.Objects;
 public class Overlay {
 
     public Overlay() {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (UnsupportedLookAndFeelException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void start(final String fileNameToRead) {

@@ -1,14 +1,20 @@
-# TODO
-
-## ⭐ Features
+# ⭐ Features
 * Overlay on top of all applications
 * easy update to next requirement
 * public display of time without hindering presentation
 
-## 🖥️️ Screenshots
+# 🖥️️ Screenshots
+Overview of panels
 ![Overview](documentation/images/overview.png)
 
-## 🛠️ Conf
+# 🧑‍💻️️ Controls/Usage
+## Main Control window
+## Timer
+### Reset Timer
+### Adjust Time
+## Lock Window in Position
+
+# 🛠️ Conf
 Example configuration
 ```json lines
 {
