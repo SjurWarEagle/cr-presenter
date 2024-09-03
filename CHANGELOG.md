@@ -1,4 +1,7 @@
 v0.0.12
+* change font of text
+
+v0.0.12
 * change root folder from zip
 
 v0.0.11
