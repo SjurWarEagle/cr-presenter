@@ -35,3 +35,6 @@ Example configuration
   ]
 }
 ```
+# Licenses
+## Font:
+https://www.keshikan.net/fonts-e.html

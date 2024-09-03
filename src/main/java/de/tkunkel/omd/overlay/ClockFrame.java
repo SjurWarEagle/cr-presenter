@@ -10,6 +10,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class ClockFrame extends JFrame implements ClockLockStateChangedEventListener, InfoTextChangedEventListener, DarkModeChangedEventListener, ClockDurationChangedEventListener {
     private static final JLabel INFO_TEXT_LABEL = new JLabel();
@@ -19,9 +21,18 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
     private static long remainingDurationInSec;
     private static int initialDurationInSec;
     private boolean use = true;
+    private final Font digitsFont;
 
     public ClockFrame(final int durationInSec) {
         setTitle("Move this window to the overlay position");
+
+        try {
+            InputStream is = ClockFrame.class.getResourceAsStream("/DSEG7Modern-Regular.ttf");
+            digitsFont = Font.createFont(Font.TRUETYPE_FONT, is);
+            INFO_TEXT_LABEL.setFont(digitsFont);
+        } catch (FontFormatException | IOException e) {
+            throw new RuntimeException(e);
+        }
 
         Thread thread = new Thread(() -> {
             while (true) {
@@ -68,12 +79,19 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
                 ClockFrame.PROGRESS_BAR.setBackground(Color.YELLOW);
                 ClockFrame.PROGRESS_BAR.setForeground(Color.RED);
                 ClockFrame.INFO_TEXT_LABEL.setForeground(Color.RED);
+            }else if (ClockFrame.remainingDurationInSec <= 60*9) {
+                int hours = Math.toIntExact((ClockFrame.remainingDurationInSec - ClockFrame.remainingDurationInSec % 60) / 60);
+                if ("OUT!".equalsIgnoreCase(ClockFrame.INFO_TEXT_LABEL.getText())) {
+                    refreshDisplay();
+                }
+                timeString = String.format("%02d : %02d", hours, (ClockFrame.remainingDurationInSec % 60));
+                ClockFrame.INFO_TEXT_LABEL.setForeground(Color.MAGENTA);
             } else {
                 int hours = Math.toIntExact((ClockFrame.remainingDurationInSec - ClockFrame.remainingDurationInSec % 60) / 60);
                 if ("OUT!".equalsIgnoreCase(ClockFrame.INFO_TEXT_LABEL.getText())) {
                     refreshDisplay();
                 }
-                timeString = String.format("%02d:%02d", hours, (ClockFrame.remainingDurationInSec % 60));
+                timeString = String.format("%02d : %02d", hours, (ClockFrame.remainingDurationInSec % 60));
             }
             ClockFrame.INFO_TEXT_LABEL.setText(timeString);
 
@@ -98,7 +116,7 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
     }
 
     private void addTimeText() {
-        Font mainTextFont = new Font("Serif", Font.PLAIN, 50);
+        Font mainTextFont = digitsFont.deriveFont(50f);
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.gridx = 1;
