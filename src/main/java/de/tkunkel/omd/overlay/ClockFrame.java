@@ -79,7 +79,7 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
                 ClockFrame.PROGRESS_BAR.setBackground(Color.YELLOW);
                 ClockFrame.PROGRESS_BAR.setForeground(Color.RED);
                 ClockFrame.INFO_TEXT_LABEL.setForeground(Color.RED);
-            }else if (ClockFrame.remainingDurationInSec <= 60*9) {
+            } else if (ClockFrame.remainingDurationInSec <= 60 * 9) {
                 int hours = Math.toIntExact((ClockFrame.remainingDurationInSec - ClockFrame.remainingDurationInSec % 60) / 60);
                 if ("OUT!".equalsIgnoreCase(ClockFrame.INFO_TEXT_LABEL.getText())) {
                     refreshDisplay();
