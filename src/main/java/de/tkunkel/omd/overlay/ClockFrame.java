@@ -12,10 +12,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 
 public class ClockFrame extends JFrame implements ClockLockStateChangedEventListener, InfoTextChangedEventListener, DarkModeChangedEventListener, ClockDurationChangedEventListener {
     private static final JLabel INFO_TEXT_LABEL = new JLabel();
     private static final JProgressBar PROGRESS_BAR = new JProgressBar();
+    private static final String TEXT_OUT = "OUT!";
     private boolean darkMode = false;
     private boolean isLocked = false;
     private static long remainingDurationInSec;
@@ -75,28 +77,47 @@ public class ClockFrame extends JFrame implements ClockLockStateChangedEventList
             String timeString;
             ClockFrame.remainingDurationInSec--;
             if (ClockFrame.remainingDurationInSec <= 0) {
-                timeString = "OUT!";
-                ClockFrame.PROGRESS_BAR.setBackground(Color.YELLOW);
-                ClockFrame.PROGRESS_BAR.setForeground(Color.RED);
-                ClockFrame.INFO_TEXT_LABEL.setForeground(Color.RED);
+                timeString = showTimeOut();
             } else if (ClockFrame.remainingDurationInSec <= 60 * 9) {
-                int hours = Math.toIntExact((ClockFrame.remainingDurationInSec - ClockFrame.remainingDurationInSec % 60) / 60);
-                if ("OUT!".equalsIgnoreCase(ClockFrame.INFO_TEXT_LABEL.getText())) {
-                    refreshDisplay();
-                }
-                timeString = String.format("%02d : %02d", hours, (ClockFrame.remainingDurationInSec % 60));
-                ClockFrame.INFO_TEXT_LABEL.setForeground(Color.MAGENTA);
+                timeString = showTimeNearingEnd();
             } else {
                 int hours = Math.toIntExact((ClockFrame.remainingDurationInSec - ClockFrame.remainingDurationInSec % 60) / 60);
-                if ("OUT!".equalsIgnoreCase(ClockFrame.INFO_TEXT_LABEL.getText())) {
+                if (TEXT_OUT.equalsIgnoreCase(ClockFrame.INFO_TEXT_LABEL.getText())) {
                     refreshDisplay();
                 }
                 timeString = String.format("%02d : %02d", hours, (ClockFrame.remainingDurationInSec % 60));
             }
+            System.out.println(timeString);
             ClockFrame.INFO_TEXT_LABEL.setText(timeString);
 
             ClockFrame.PROGRESS_BAR.setValue((int) ClockFrame.remainingDurationInSec);
         });
+    }
+
+    private static String showTimeOut() {
+        String timeString;
+        ClockFrame.PROGRESS_BAR.setBackground(Color.YELLOW);
+        ClockFrame.PROGRESS_BAR.setForeground(Color.RED);
+        //toggle between 2 colours to draw more attention
+        if (new Date().getTime() % 2 == 0) {
+            timeString = "out!";
+            ClockFrame.INFO_TEXT_LABEL.setForeground(Color.DARK_GRAY);
+        } else {
+            timeString = "out!";
+            ClockFrame.INFO_TEXT_LABEL.setForeground(Color.RED);
+        }
+        return timeString;
+    }
+
+    private String showTimeNearingEnd() {
+        String timeString;
+        int hours = Math.toIntExact((ClockFrame.remainingDurationInSec - ClockFrame.remainingDurationInSec % 60) / 60);
+        if ("OUT!".equalsIgnoreCase(ClockFrame.INFO_TEXT_LABEL.getText())) {
+            refreshDisplay();
+        }
+        timeString = String.format("%02d : %02d", hours, (ClockFrame.remainingDurationInSec % 60));
+        ClockFrame.INFO_TEXT_LABEL.setForeground(Color.MAGENTA);
+        return timeString;
     }
 
     private void addTimeBar() {
