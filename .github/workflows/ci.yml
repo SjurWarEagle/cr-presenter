@@ -17,8 +17,14 @@ jobs:
       - name: Set up GraalVM
         run: |
           choco install graalvm --version=22.3.0 # Specify the version you need
-          echo "GRAALVM_HOME=C:\ProgramData\chocolatey\lib\graalvm\tools\graalvm" >> $GITHUB_ENV
-          echo "PATH=$GRAALVM_HOME\bin;$PATH" >> $GITHUB_ENV
+          # Check if the installation was successful
+          if (Test-Path "C:\ProgramData\chocolatey\lib\graalvm\tools\graalvm") {
+            echo "GRAALVM_HOME=C:\ProgramData\chocolatey\lib\graalvm\tools\graalvm" >> $GITHUB_ENV
+            echo "PATH=$GRAALVM_HOME\bin;$PATH" >> $GITHUB_ENV
+          } else {
+            Write-Error "GraalVM installation failed or path is incorrect."
+            exit 1
+          }
 
       - name: Verify GRAALVM_HOME
         run: echo $env:GRAALVM_HOME
