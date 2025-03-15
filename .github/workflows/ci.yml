@@ -21,7 +21,9 @@ jobs:
           echo "PATH=$GRAALVM_HOME\bin;$PATH" >> $GITHUB_ENV
 
       - name: Install Native Image
-        run: gu install native-image
+        shell: pwsh
+        run: |
+          & "$env:GRAALVM_HOME\bin\gu" install native-image
 
       - name: Set up Maven
         uses: actions/setup-java@v2
@@ -36,8 +38,8 @@ jobs:
         run: |
           native-image -cp target/classes de.tkunkel.omd.overlay.starter.Starter
 
-#      - name: Upload Executable
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: myapp-executable
-#          path: Starter.exe # Change this to the name of your executable
+      - name: Upload Executable
+        uses: actions/upload-pages-artifact@v2
+        with:
+          name: myapp-executable
+          path: Starter.exe # Change this to the name of your executable
