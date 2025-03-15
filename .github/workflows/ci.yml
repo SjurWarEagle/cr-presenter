@@ -23,6 +23,7 @@ jobs:
       - name: Verify GRAALVM_HOME
         run: |
           echo "GRAALVM_HOME is set to: $env:GRAALVM_HOME"
+          echo "2. GRAALVM_HOME is set to: %GRAALVM_HOME%"
           dir "$env:GRAALVM_HOME\bin"
 
       - name: Install Native Image
