@@ -40,8 +40,8 @@ jobs:
         run: |
           native-image -cp out de.tkunkel.omd.overlay.starter.Starter
 
-      - name: Upload Executable
-        uses: actions/upload-artifact@v2
-        with:
-          name: myapp-executable
-          path: Starter.exe # Change this to the name of your executable
+#      - name: Upload Executable
+#        uses: actions/upload-artifact@v2
+#        with:
+#          name: myapp-executable
+#          path: Starter.exe # Change this to the name of your executable
