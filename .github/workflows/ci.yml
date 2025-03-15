@@ -45,7 +45,7 @@ jobs:
           native-image -cp target/classes de.tkunkel.omd.overlay.starter.Starter
 
       - name: Upload Executable
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           name: myapp-executable
           path: Starter.exe # Change this to the name of your executable
