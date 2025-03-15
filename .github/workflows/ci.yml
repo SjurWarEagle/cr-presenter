@@ -17,15 +17,13 @@ jobs:
       - name: Set up GraalVM
         run: |
           choco install graalvm --version=22.3.0 # Specify the version you need
-          # Set the correct GRAALVM_HOME path
           echo "GRAALVM_HOME=C:\Program Files\GraalVM\graalvm-ce-java17-22.3.0" >> $GITHUB_ENV
-          echo "PATH=$GRAALVM_HOME\bin;$PATH" >> $GITHUB_ENV
+          echo "PATH=C:\Program Files\GraalVM\graalvm-ce-java17-22.3.0\bin;$PATH" >> $GITHUB_ENV
 
       - name: Verify GRAALVM_HOME
-        run: echo $env:GRAALVM_HOME
-
-      - name: List GraalVM bin directory
-        run: dir "$env:GRAALVM_HOME\bin"
+        run: |
+          echo "GRAALVM_HOME is set to: $env:GRAALVM_HOME"
+          dir "$env:GRAALVM_HOME\bin"
 
       - name: Install Native Image
         shell: pwsh
